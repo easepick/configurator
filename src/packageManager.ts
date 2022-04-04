@@ -41,7 +41,7 @@ const picker = new easepick.create([config])
     return this.packages[idx];
   }
 
-  public render() {
+  public renderHTML() {
     this.packages.forEach(pkg => {
       pkg.createTab();
       pkg.createTabContent();
@@ -164,7 +164,6 @@ const picker = new easepick.create([config])
   }
 
   public checkRequirements(config) {
-    console.log(config);
     for (const pkg of this.packages) {
       if (!pkg.included) continue;
 
@@ -179,26 +178,41 @@ const picker = new easepick.create([config])
 
           if (opt.requirements.depends instanceof Array) {
             for (const req of opt.requirements.depends) {
-              const configStr = JSON.stringify(config);
-              const reqStr = JSON.stringify(req).replace(/^\{/, '').replace(/\}$/, '');
-
-              console.log(configStr, reqStr);
-              reqValid = reqValid && configStr.indexOf(reqStr) >= 0;
+              reqValid = reqValid && this.objIncludes(config, req);
             }
           }
 
           if (opt.requirements.conflict instanceof Array) {
             for (const req of opt.requirements.conflict) {
-              const configStr = JSON.stringify(config);
-              const reqStr = JSON.stringify(req).replace(/^\{/, '').replace(/\}$/, '');
-
-              reqValid = reqValid && configStr.indexOf(reqStr) === -1;
+              if (typeof req === 'function') {
+                reqValid = reqValid && req(config);
+              } else {
+                reqValid = reqValid && !this.objIncludes(config, req);
+              }
             }
           }
 
           opt.element.classList.toggle('unavailable', !reqValid);
         }
       }
+    }
+  }
+
+  private objIncludes(obj, searchObj): boolean {
+    for (const key of Object.keys(searchObj)) {
+      if (searchObj[key] !== null
+        && typeof searchObj[key] === 'object'
+        && Object.keys(searchObj[key]).length > 0) {
+        return key in obj && this.objIncludes(obj[key], searchObj[key]);
+      }
+
+      if (searchObj[key] !== null
+        && typeof searchObj[key] === 'object'
+        && Object.keys(searchObj[key]).length === 0) {
+        return key in obj;
+      }
+
+      return key in obj && obj[key] === searchObj[key];
     }
   }
 }

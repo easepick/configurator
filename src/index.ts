@@ -18,6 +18,8 @@ const app = document.getElementById('app');
 
 if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
   const optionsElement = app.querySelector('.package-options');
+
+  // show/hide unconfigurable options
   app.querySelector('blockquote #yes-btn').addEventListener('click', (e) => {
     e.preventDefault();
     const span = (e.target as HTMLElement).previousElementSibling;
@@ -29,11 +31,14 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
       span.innerHTML = 'You want to hide these options ?';
     }
   });
+
+  // hide question row
   app.querySelector('blockquote #no-btn').addEventListener('click', (e) => {
     e.preventDefault();
     (e.target as HTMLElement).closest('p').style.display = 'none';
   });
 
+  // tab handler
   [...app.querySelectorAll('.tabs-wrapper .tab')].forEach(tab => {
     tab.addEventListener('click', (e) => {
       const wrapper = tab.closest('.tabs-wrapper');
@@ -63,7 +68,7 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
   const defaultConfig = {
     element: document.getElementById('app-picker'),
     css: [
-      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.2/dist/index.css',
+      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.1.3/dist/index.css',
     ],
     zIndex: 10,
   }
@@ -80,13 +85,16 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
   packageManager.add(new KbdPkg());
   packageManager.add(new TimePkg());
 
+  // handler options
   app.addEventListener('options', (e: CustomEvent) => {
     const packages = packageManager.packages.filter(x => x.included);
     let config = {};
+    let plugins = [];
 
     packages.forEach(pkg => {
       const pkgConfig = pkg.createConfig();
       config = deepmerge(config, pkgConfig);
+      plugins.push(pkg.optionKey);
     });
 
     if ('LockPlugin' in config) {
@@ -100,64 +108,79 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
     }
 
     const pickerLayout = packageManager.app.querySelector('.app-picker-layout');
-    if ('RangePlugin' in config) {
-      if ('elementEnd' in config['RangePlugin']) {
-        config['RangePlugin']['elementEnd'] = document.getElementById('app-picker-end');
-        pickerLayout.classList.add('element-end');
-      } else {
-        pickerLayout.classList.remove('element-end');
-      }
-    } else {
-      pickerLayout.classList.remove('element-end');
+
+    // show/hide element end
+    pickerLayout.classList.toggle('element-end', 'RangePlugin' in config && 'elementEnd' in config['RangePlugin']);
+
+    // replace elementEnd placeholder to exists element
+    if ('RangePlugin' in config && 'elementEnd' in config['RangePlugin']) {
+      config['RangePlugin']['elementEnd'] = document.getElementById('app-picker-end');
     }
 
-    picker.options.plugins.forEach(plugin => {
-      picker.PluginManager.removeInstance(plugin);
-    });
-    picker.options.plugins = [];
+    // handle event.detail
+    if ('detail' in e && e.detail !== null) {
+      const { pkg, included } = e.detail;
 
-    const plugins = Object.keys(config).filter(x => /Plugin$/.test(x));
-
-    [...packageManager.app.querySelectorAll('.pkg-tab-name input[type="checkbox"]')].forEach((c: HTMLInputElement) => {
-      if (c.id !== 'easepick-core') {
-        c.disabled = false;
-      }
-    });
-
-    if (plugins.length) {
-      plugins.forEach(plugin => {
-        const pkg = packageManager.get(plugin);
-        if (pkg && pkg.dependencies.length) {
-          pkg.dependencies.forEach(d => {
-            const dPkg = packageManager.get(d);
+      // on enable/disable plugin via checkbox
+      if (pkg && typeof included !== 'undefined') {
+        if (included) {
+          pkg.dependencies.forEach(dep => {
+            const dPkg = packageManager.get(dep);
             dPkg.included = true;
 
             const pkgCheckbox = document.querySelector(`input#${dPkg.id()}`) as HTMLInputElement;
-            pkgCheckbox.checked = true;
             pkgCheckbox.disabled = true;
+            pkgCheckbox.checked = true;
 
-            if (!plugins.includes(d)) {
-              plugins.unshift(d);
-              picker.options.plugins.push(d);
-              picker.PluginManager.addInstance(d);
-            }
+            plugins.unshift(dep);
+          });
+
+          plugins.push(pkg.optionKey);
+        } else {
+          picker.PluginManager.removeInstance(pkg.optionKey);
+
+          pkg.dependencies.forEach(dep => {
+            const dPkg = packageManager.get(dep);
+            //dPkg.included = true;
+
+            const pkgCheckbox = document.querySelector(`input#${dPkg.id()}`) as HTMLInputElement;
+            pkgCheckbox.disabled = false;
+            pkgCheckbox.checked = true;
           });
         }
-
-        picker.options.plugins.push(plugin);
-        picker.PluginManager.addInstance(plugin);
-
-        // update plugin options
-        const instance = picker.PluginManager.getInstance(plugin);
-        if (!(plugin in baseConfigPlugin)) {
-          baseConfigPlugin[plugin] = { ...instance['options'] };
-        }
-        instance['options'] = deepmerge(baseConfigPlugin[plugin], config[plugin]);
-      });
-      config['plugins'] = plugins;
+      }
     }
 
     picker.options = deepmerge(baseConfig, config);
+    plugins = [...new Set(plugins.filter(x => x))];
+    picker.options.plugins = [...plugins];
+
+    if (plugins.length) {
+      config['plugins'] = [...plugins];
+    }
+
+    // remove all plugin instances
+    for (const instance of Object.keys(picker.PluginManager.instances)) {
+      picker.PluginManager.removeInstance(instance);
+    }
+
+    // add plugin instance and apply options
+    plugins.forEach(pluginName => {
+      picker.PluginManager.addInstance(pluginName);
+      const instance = picker.PluginManager.getInstance(pluginName);
+
+      if (!(pluginName in baseConfigPlugin)) {
+        baseConfigPlugin[pluginName] = { ...instance['options'] };
+      }
+
+      instance['options'] = deepmerge(baseConfigPlugin[pluginName], config[pluginName] || {});
+    });
+
+    picker.updateValues();
+    picker.renderAll();
+
+    packageManager.setupInfo(picker['version'], deepmerge(defaultConfig, config));
+    packageManager.checkRequirements(config);
 
     if ('inline' in config) {
       picker.ui.container.classList.add('inline');
@@ -175,15 +198,9 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
     if ('zIndex' in config) {
       picker.ui.container.style.zIndex = config['zIndex'];
     }
-
-    //picker.updateValues();
-    picker.renderAll();
-
-    packageManager.checkRequirements(config);
-    packageManager.setupInfo(picker['version'], deepmerge(defaultConfig, config));
   });
 
-  packageManager.render();
+  packageManager.renderHTML();
   app.dispatchEvent(new CustomEvent('options'));
 } else {
   app.innerHTML = '';

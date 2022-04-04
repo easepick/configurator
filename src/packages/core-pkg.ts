@@ -24,7 +24,6 @@ export class CorePkg extends BasePkg implements IPackage {
 
           {
             name: 'element',
-            description: 'Bind the datepicker to a element',
             configurable: false,
           },
           {
@@ -37,6 +36,7 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'firstDay',
+            info: 'Day of start week',
             default: 1,
             type: 'dropdown',
             values: [
@@ -52,6 +52,7 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'lang',
+            info: 'Language',
             default: 'en-US',
             type: 'dropdown',
             values: [
@@ -69,6 +70,7 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'format',
+            info: 'The default output format',
             default: 'YYYY-MM-DD',
             type: 'dropdown',
             values: [
@@ -81,6 +83,7 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'grid',
+            info: 'Number of calendar columns',
             default: 1,
             type: 'range',
             min: 1,
@@ -89,6 +92,7 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'calendars',
+            info: 'Number of visible months',
             default: 1,
             type: 'range',
             min: 1,
@@ -97,30 +101,35 @@ export class CorePkg extends BasePkg implements IPackage {
           },
           {
             name: 'readonly',
+            info: 'Add readonly attribute to element',
             default: true,
             type: 'boolean',
             configurable: true,
           },
           {
             name: 'autoApply',
+            info: 'Hide the apply and cancel buttons',
             default: true,
             type: 'boolean',
             configurable: true,
           },
           {
             name: 'zIndex',
+            info: 'zIndex of picker',
             default: 10,
             type: 'number',
             configurable: true,
           },
           {
             name: 'inline',
+            info: 'Show calendar inline',
             default: false,
             type: 'boolean',
             configurable: true,
           },
           {
             name: 'header',
+            info: 'Add header to calendar',
             default: null,
             type: 'text',
             configurable: true,

@@ -12,7 +12,7 @@ export interface IOptionGroup {
 
 export interface IOption {
   name: string;
-  description?: string;
+  info?: string;
   element?: HTMLElement;
   default?: unknown;
   value?: unknown;

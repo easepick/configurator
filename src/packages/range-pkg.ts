@@ -85,6 +85,7 @@ export class RangePkg extends BasePkg implements IPackage {
             requirements: {
               conflict: [
                 { RangePlugin: { tooltip: false } },
+                //(c) => (new Intl.PluralRules(c['lang']).select(0)) === 'zero',
               ]
             },
           },
@@ -112,6 +113,17 @@ export class RangePkg extends BasePkg implements IPackage {
           },
           {
             name: 'few',
+            default: '',
+            type: 'text',
+            configurable: true,
+            requirements: {
+              conflict: [
+                { RangePlugin: { tooltip: false } },
+              ]
+            },
+          },
+          {
+            name: 'many',
             default: '',
             type: 'text',
             configurable: true,

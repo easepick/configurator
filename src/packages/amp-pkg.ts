@@ -44,7 +44,7 @@ export class AmpPkg extends BasePkg implements IPackage {
             configurable: true,
             requirements: {
               depends: [
-                { AmpPlugin: { years: true } },
+                { AmpPlugin: { dropdown: { years: true } } },
               ],
             },
           },
@@ -55,7 +55,7 @@ export class AmpPkg extends BasePkg implements IPackage {
             configurable: true,
             requirements: {
               depends: [
-                { AmpPlugin: { years: true } },
+                { AmpPlugin: { dropdown: { years: true } } },
               ],
             },
           },

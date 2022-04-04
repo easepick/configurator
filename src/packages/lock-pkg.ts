@@ -68,7 +68,7 @@ export class LockPkg extends BasePkg implements IPackage {
             requirements: {
               depends: [
                 { PresetPlugin: {} },
-              ]
+              ],
             },
           },
           {

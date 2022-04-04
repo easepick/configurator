@@ -41,8 +41,9 @@ export default {
     copy({
       targets: [
         { src: 'dist/**/*', dest: '../easepick-docs/assets/configurator' },
-      ]
-    })
+      ],
+      hook: 'writeBundle',
+    }),
   ],
   external(id) {
     return /^@easepick\//.test(id);

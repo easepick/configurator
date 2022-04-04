@@ -81,7 +81,11 @@ export class BasePkg {
       this.included = input.checked;
       tab.classList.toggle('included', input.checked);
 
-      this.app.dispatchEvent(new CustomEvent('options'));
+      const detail = {
+        pkg: this,
+        included: input.checked,
+      }
+      this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
     tabName.appendChild(input);
 
@@ -127,15 +131,30 @@ export class BasePkg {
         optButtons.className = 'pkg-option-buttons';
         optName.appendChild(optButtons);
 
+        if (!group.name) {
+          const linkIcon = document.createElement('a');
+          linkIcon.className = 'icon icon-link';
+          linkIcon.href = `${this.url}#option-${opt.name}`;
+          linkIcon.target = '_blank';
+          optButtons.appendChild(linkIcon);
+        }
+
+        if (opt.info) {
+          const infoIcon = document.createElement('div');
+          infoIcon.className = 'icon icon-info';
+          infoIcon.dataset.title = opt.info;
+          optButtons.appendChild(infoIcon);
+        }
+
         if (opt.requirements) {
           const warnIcon = document.createElement('div');
           warnIcon.className = 'icon icon-warn';
 
           if (opt.requirements.depends instanceof Array) {
-            warnIcon.dataset.title = `Required: ${JSON.stringify(opt.requirements.depends).replace(/^\[/, '').replace(/\]$/, '')}`;
+            warnIcon.dataset.title = `Required: ${this.formatRequirements(opt.requirements.depends)}`;
           }
           else if (opt.requirements.conflict instanceof Array) {
-            warnIcon.dataset.title = `Ignored due to: ${JSON.stringify(opt.requirements.conflict).replace(/^\[/, '').replace(/\]$/, '')}`;
+            warnIcon.dataset.title = `Ignored due to: ${this.formatRequirements(opt.requirements.conflict)}`;
           }
 
           optButtons.appendChild(warnIcon);
@@ -178,7 +197,7 @@ export class BasePkg {
       opt.value = el.valueAsNumber;
       (el.nextElementSibling as HTMLElement).innerText = el.value;
 
-      const detail = { pkg: this.name, key: this.optionKey };
+      const detail = { pkg: this, opt };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
   }
@@ -186,10 +205,11 @@ export class BasePkg {
   private dropdownListener(element: HTMLElement, opt: IOption) {
     element.addEventListener('change', (e) => {
       const el = e.target as HTMLSelectElement;
-      opt.modified = el.value !== opt.default;
-      opt.value = el.value;
+      const v = /^\d+$/.test(String(opt.default)) ? Number(el.value) : el.value;
+      opt.modified = v !== opt.default;
+      opt.value = v;
 
-      const detail = { pkg: this.name, key: this.optionKey };
+      const detail = { pkg: this, opt };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
   }
@@ -201,7 +221,7 @@ export class BasePkg {
       opt.modified = typeof opt.default === 'string' ? el.value !== opt.default : Number(el.value) !== opt.default;
       opt.value = typeof opt.default === 'string' ? el.value : Number(el.value);
 
-      const detail = { pkg: this.name, key: this.optionKey };
+      const detail = { pkg: this, opt };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
   }
@@ -212,7 +232,7 @@ export class BasePkg {
       opt.modified = el.checked !== opt.default;
       opt.value = el.checked;
 
-      const detail = { pkg: this.name, key: this.optionKey };
+      const detail = { pkg: this, opt };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
   }
@@ -223,7 +243,7 @@ export class BasePkg {
       opt.modified = el.value !== opt.default;
       opt.value = el.value;
 
-      const detail = { pkg: this.name, key: this.optionKey };
+      const detail = { pkg: this, opt };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
   }
@@ -237,5 +257,12 @@ export class BasePkg {
       const detail = { pkg: this.name, key: this.optionKey };
       this.app.dispatchEvent(new CustomEvent('options', { detail }));
     });
+  }
+
+  private formatRequirements(array) {
+    return JSON.stringify(array)
+      .replace(/^\[/, '')
+      .replace(/\]$/, '')
+      .replace(/"([^"]+)":/g, '$1:');
   }
 }
