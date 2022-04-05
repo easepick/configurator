@@ -1,5 +1,5 @@
 import { Control } from '../control';
-import { IOption, IOptionGroup, ISetup } from './interface';
+import { IOption, IOptionGroup, ISetup } from '../interface';
 
 export class BasePkg {
   public name: string;

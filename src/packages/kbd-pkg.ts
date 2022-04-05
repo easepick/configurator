@@ -1,5 +1,5 @@
 import { BasePkg } from './base-pkg';
-import { IPackage } from './interface';
+import { IPackage } from '../interface';
 
 export class KbdPkg extends BasePkg implements IPackage {
   public name = '@easepick/kbd-plugin';

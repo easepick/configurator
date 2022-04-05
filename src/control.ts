@@ -1,4 +1,4 @@
-import { IOption } from './packages/interface';
+import { IOption } from './interface';
 
 export class Control {
   public range(opt: IOption) {

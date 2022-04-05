@@ -1,5 +1,5 @@
 import { BasePkg } from './packages/base-pkg';
-import { ISetup } from './packages/interface';
+import { ISetup } from './interface';
 
 export class PackageManager {
   public app: HTMLElement;

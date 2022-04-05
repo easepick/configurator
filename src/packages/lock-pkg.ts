@@ -1,5 +1,5 @@
 import { BasePkg } from './base-pkg';
-import { IPackage } from './interface';
+import { IPackage } from '../interface';
 
 export class LockPkg extends BasePkg implements IPackage {
   public name = '@easepick/lock-plugin';
@@ -41,24 +41,44 @@ export class LockPkg extends BasePkg implements IPackage {
             default: null,
             type: 'number',
             configurable: true,
+            requirements: {
+              depends: [
+                { RangePlugin: {} },
+              ]
+            },
           },
           {
             name: 'maxDays',
             default: null,
             type: 'number',
             configurable: true,
+            requirements: {
+              depends: [
+                { RangePlugin: {} },
+              ]
+            },
           },
           {
             name: 'selectForward',
             default: false,
             type: 'boolean',
             configurable: true,
+            requirements: {
+              depends: [
+                { RangePlugin: {} },
+              ]
+            },
           },
           {
             name: 'selectBackward',
             default: false,
             type: 'boolean',
             configurable: true,
+            requirements: {
+              depends: [
+                { RangePlugin: {} },
+              ]
+            },
           },
           {
             name: 'presets',

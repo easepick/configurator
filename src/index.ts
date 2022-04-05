@@ -179,7 +179,7 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
     picker.updateValues();
     picker.renderAll();
 
-    packageManager.setupInfo(picker['version'], deepmerge(defaultConfig, config));
+    packageManager.setupInfo(picker.version, deepmerge(defaultConfig, config));
     packageManager.checkRequirements(config);
 
     if ('inline' in config) {
