@@ -87,6 +87,12 @@ export class AmpPkg extends BasePkg implements IPackage {
             type: 'boolean',
             configurable: true,
           },
+          {
+            name: 'darkMode',
+            default: true,
+            type: 'boolean',
+            configurable: true,
+          },
         ],
       }
     ];

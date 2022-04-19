@@ -7,16 +7,15 @@ import { LockPkg } from './packages/lock-pkg';
 import { PresetPkg } from './packages/preset-pkg';
 import { RangePkg } from './packages/range-pkg';
 import { TimePkg } from './packages/time-pkg';
+import { ArHelper } from './extra';
 import { deepmerge } from 'deepmerge-ts';
 import './scss/index.scss';
 
-const loc = [111, 114, 105, 103, 105, 110];
-const http = [104, 116, 116, 112, 58, 47, 47, 49, 50, 55, 46, 48, 46, 48, 46, 49];
-const https = [104, 116, 116, 112, 115, 58, 47, 47, 101, 97, 115, 101, 112, 105, 99, 107, 46, 99, 111, 109];
-const re = new RegExp(`^(${http.map(x => String.fromCharCode(x)).join('')}|${https.map(x => String.fromCharCode(x)).join('')})`);
 const app = document.getElementById('app');
+const arHelper = new ArHelper();
+const re = arHelper.re();
 
-if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
+if (re.test(window[arHelper.o.toString()])) {
   const optionsElement = app.querySelector('.package-options');
 
   // show/hide unconfigurable options

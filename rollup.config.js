@@ -34,7 +34,7 @@ export default {
     }),
     ENV_PROD && terser(),
     ENV_PROD && obfuscator({
-      domainLock: ['127.0.0.1', 'easepick.com'],
+      domainLock: ['127.0.0.1', 'localhost', 'easepick.com'],
       domainLockRedirectUrl: 'https://easepick.com',
       deadCodeInjection: true,
     }),
