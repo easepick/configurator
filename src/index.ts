@@ -68,7 +68,7 @@ if (re.test(window[loc.map(x => String.fromCharCode(x)).join('')])) {
   const defaultConfig = {
     element: document.getElementById('app-picker'),
     css: [
-      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.1.3/dist/index.css',
+      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.1.6/dist/index.css',
     ],
     zIndex: 10,
   }
