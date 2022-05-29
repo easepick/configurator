@@ -64,10 +64,11 @@ if (re.test(window[arHelper.o.toString()])) {
     });
   });
 
+  const ver = JSON.parse(localStorage.getItem("version")) || { v: "1.2.0" };
   const defaultConfig = {
     element: document.getElementById('app-picker'),
     css: [
-      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.1.6/dist/index.css',
+      `https://cdn.jsdelivr.net/npm/@easepick/bundle@${ver.v}/dist/index.css`,
     ],
     zIndex: 10,
   }

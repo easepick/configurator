@@ -38,12 +38,12 @@ export default {
       domainLockRedirectUrl: 'https://easepick.com',
       deadCodeInjection: true,
     }),
-    copy({
-      targets: [
-        { src: 'dist/**/*', dest: '../easepick-docs/assets/configurator' },
-      ],
-      hook: 'writeBundle',
-    }),
+    // copy({
+    //   targets: [
+    //     { src: 'dist/**/*', dest: '../easepick-docs/assets/configurator' },
+    //   ],
+    //   hook: 'writeBundle',
+    // }),
   ],
   external(id) {
     return /^@easepick\//.test(id);
