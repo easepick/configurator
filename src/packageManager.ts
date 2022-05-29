@@ -50,26 +50,22 @@ const picker = new easepick.create([config])
 
   public createCodeHighlight(html) {
     const language = document.createElement('div');
-    language.className = 'language-bash highlighter-rouge';
-
-    const highlight = document.createElement('div');
-    highlight.className = 'highlight';
+    language.className = 'language-bash extra-class';
 
     const pre = document.createElement('pre');
-    pre.className = 'highlight';
+    pre.className = 'language-bash';
 
     const code = document.createElement('code');
     code.innerHTML = html;
 
     pre.appendChild(code);
-    highlight.appendChild(pre);
-    language.appendChild(highlight);
+    language.appendChild(pre);
 
     return language;
   }
 
   public npm2html(array) {
-    return array.join("\n").replace(/ install /g, ' <span class="nb">install</span> ');
+    return array.join("\n").replace(/npm install /g, ' <span class="token function">npm install</span> ');
   }
 
   public cdn2html(array, version) {

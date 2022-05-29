@@ -178,7 +178,7 @@
       border-left: 3px solid transparent;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
-      max-width: 260px;
+      max-width: 190px;
 
       &:hover {
         cursor: pointer;
@@ -247,7 +247,7 @@
 
         > legend {
           font-size: 14px;
-          padding: 0 10px;
+          padding: 5px 10px;
           background-color: #607d8b;
           color: #fff;
           border-radius: 3px;
@@ -410,6 +410,9 @@
             outline: none;
 
             font-family: "Oswald", sans-serif;
+            padding: 0;
+            margin: 0;
+
             &:before,
             &:after {
               z-index: 2;
