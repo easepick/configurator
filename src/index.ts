@@ -11,7 +11,7 @@ import { ArHelper } from './extra';
 import { deepmerge } from 'deepmerge-ts';
 import './scss/index.scss';
 
-const app = document.getElementById('app');
+const app = document.getElementById('app-configurator');
 const arHelper = new ArHelper();
 const re = arHelper.re();
 
