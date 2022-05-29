@@ -17,7 +17,7 @@ if (typeof gh !== 'undefined') {
     const optionsElement = app.querySelector('.package-options');
 
     // show/hide unconfigurable options
-    app.querySelector('blockquote #yes-btn').addEventListener('click', (e) => {
+    app.querySelector('.tip #yes-btn').addEventListener('click', (e) => {
       e.preventDefault();
       const span = (e.target as HTMLElement).previousElementSibling;
       if (optionsElement.classList.contains('all-options')) {
@@ -30,7 +30,7 @@ if (typeof gh !== 'undefined') {
     });
 
     // hide question row
-    app.querySelector('blockquote #no-btn').addEventListener('click', (e) => {
+    app.querySelector('.tip #no-btn').addEventListener('click', (e) => {
       e.preventDefault();
       (e.target as HTMLElement).closest('p').style.display = 'none';
     });

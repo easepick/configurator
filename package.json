@@ -1,7 +1,7 @@
 {
   "name": "@easepick/configurator",
   "description": "",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "author": {
     "name": "Rinat G.",
