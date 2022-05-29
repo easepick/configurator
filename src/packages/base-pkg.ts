@@ -17,7 +17,7 @@ export class BasePkg {
       this['fillOptions']();
     }
 
-    this.app = document.getElementById('app');
+    this.app = document.getElementById('app-configurator');
   }
 
   public id() {

@@ -29,7 +29,7 @@ const picker = new easepick.create([config])
   <span class="nt">&lt;/html&gt;</span>`;
 
   constructor() {
-    this.app = document.getElementById('app');
+    this.app = document.getElementById('app-configurator');
   }
 
   public add(pkg: BasePkg) {
