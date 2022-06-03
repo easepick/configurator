@@ -9,7 +9,7 @@ export class PackageManager {
       'npm install @easepick/bundle',
     ],
     cdn: [
-      'https://cdn.jsdelivr.net/npm/@easepick/bundle@[version]/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/bundle@__VERSION__/dist/index.umd.min.js',
     ],
   }
 

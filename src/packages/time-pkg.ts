@@ -12,10 +12,10 @@ export class TimePkg extends BasePkg implements IPackage {
       'npm install @easepick/time-plugin',
     ],
     cdn: [
-      'https://cdn.jsdelivr.net/npm/@easepick/datetime@[version]/dist/index.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/@easepick/core@[version]/dist/index.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/@easepick/base-plugin@[version]/dist/index.umd.min.js',
-      'https://cdn.jsdelivr.net/npm/@easepick/time-plugin@[version]/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/datetime@__VERSION__/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/core@__VERSION__/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/base-plugin@__VERSION__/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/time-plugin@__VERSION__/dist/index.umd.min.js',
     ],
   }
 
