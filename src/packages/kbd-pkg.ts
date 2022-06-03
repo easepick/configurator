@@ -12,10 +12,10 @@ export class KbdPkg extends BasePkg implements IPackage {
       'npm install @easepick/kbd-plugin',
     ],
     cdn: [
-      '<script src="https://cdn.jsdelivr.net/npm/@easepick/datetime@[version]/dist/index.umd.min.js"></script>',
-      '<script src="https://cdn.jsdelivr.net/npm/@easepick/core@[version]/dist/index.umd.min.js"></script>',
-      '<script src="https://cdn.jsdelivr.net/npm/@easepick/base-plugin@[version]/dist/index.umd.min.js"></script>',
-      '<script src="https://cdn.jsdelivr.net/npm/@easepick/kbd-plugin@[version]/dist/index.umd.min.js"></script>',
+      'https://cdn.jsdelivr.net/npm/@easepick/datetime@[version]/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/core@[version]/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/base-plugin@[version]/dist/index.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@easepick/kbd-plugin@[version]/dist/index.umd.min.js',
     ],
   }
 

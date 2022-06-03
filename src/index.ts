@@ -39,8 +39,8 @@ if (typeof gh !== 'undefined') {
     [...app.querySelectorAll('.tabs-wrapper .tab')].forEach(tab => {
       tab.addEventListener('click', (e) => {
         const wrapper = tab.closest('.tabs-wrapper');
-        const tabs = wrapper.firstChild as HTMLElement;
-        const contents = wrapper.lastChild as HTMLElement;
+        const tabs = wrapper.firstElementChild
+        const contents = wrapper.lastElementChild;
 
         [...tabs.children].forEach(x => {
           x.classList.remove('active');

@@ -1,3 +1,7 @@
+:root {
+  --default-theme-color: #3eaf7c;
+}
+
 .app-picker-layout {
   display: flex;
   align-items: center;
@@ -69,7 +73,7 @@
       }
 
       &.active {
-        background-color: #305cd4;
+        background-color: var(--default-theme-color);
         color: #fff;
         border-radius: 3px;
         z-index: 1;
@@ -99,6 +103,7 @@
       .tab-content {
         background-color: #f2f4f9;
         height: 100%;
+        box-sizing: border-box;
       }
     }
   }
@@ -138,9 +143,9 @@
           border-bottom-right-radius: 0;
           border-top: 1px solid #e9ebee;
           border-bottom: 1px solid #e9ebee;
-          border-left: 3px solid #0038cd;
+          border-left: 3px solid var(--default-theme-color);
           box-shadow: -1px 3px 2px 0 #e8eaed;
-          color: #0441cf;
+          color: var(--default-theme-color);
         }
       }
     }
@@ -187,12 +192,12 @@
       &.active {
         border-top: 1px solid #e9ebee;
         border-bottom: 1px solid #e9ebee;
-        border-left: 3px solid #0038cd;
+        border-left: 3px solid var(--default-theme-color);
         box-shadow: -1px 3px 2px 0 #e8eaed;
         z-index: 1;
 
         .pkg-tab-name {
-          color: #0441cf;
+          color: var(--default-theme-color);
         }
       }
 
@@ -372,12 +377,16 @@
 
           input {
             width: 100%;
+            accent-color: var(--default-theme-color);
           }
 
           span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0 10px;
             font-size: 12px;
-            background-color: #305cd6;
+            background-color: var(--default-theme-color);
             border-radius: 3px;
             color: #fff;
           }
@@ -458,7 +467,7 @@
                 left: 5px;
                 right: 100px;
 
-                background-color: #305cd5;
+                background-color: var(--default-theme-color);
 
                 transition: left 0.5s, right 0.4s 0.2s;
               }
@@ -506,6 +515,7 @@
             border: none;
             outline: none;
             text-align: center;
+            height: 1rem;
           }
         }
 

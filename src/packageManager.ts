@@ -9,24 +9,9 @@ export class PackageManager {
       'npm install @easepick/bundle',
     ],
     cdn: [
-      '<script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@[version]/dist/index.umd.min.js"></script>',
+      'https://cdn.jsdelivr.net/npm/@easepick/bundle@[version]/dist/index.umd.min.js',
     ],
   }
-  public quickExampleHTML = `
-  <span class="cp">&lt;!DOCTYPE html&gt;</span>
-  <span class="nt">&lt;html&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;title&gt;</span>easepick<span class="nt">&lt;/title&gt;</span>
-      <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/@easepick/bundle@[version]/dist/index.umd.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;/head&gt;</span>
-    <span class="nt">&lt;body&gt;</span>
-      <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"datepicker"</span><span class="nt">/&gt;</span> [elementEnd]
-      <span class="nt">&lt;script&gt;</span>
-const picker = new easepick.create([config])
-      <span class="nt">&lt;/script&gt;</span>
-    <span class="nt">&lt;/body&gt;</span>
-  <span class="nt">&lt;/html&gt;</span>`;
 
   constructor() {
     this.app = document.getElementById('app-configurator');
@@ -50,15 +35,12 @@ const picker = new easepick.create([config])
 
   public createCodeHighlight(html) {
     const language = document.createElement('div');
-    language.className = 'language-bash extra-class';
+    language.className = 'language-html extra-class';
 
     const pre = document.createElement('pre');
-    pre.className = 'language-bash';
+    pre.className = 'language-html';
+    pre.innerHTML = html;
 
-    const code = document.createElement('code');
-    code.innerHTML = html;
-
-    pre.appendChild(code);
     language.appendChild(pre);
 
     return language;
@@ -69,12 +51,10 @@ const picker = new easepick.create([config])
   }
 
   public cdn2html(array, version) {
-    return array.join("\n")
-      .replace(/</g, '&lt;')
-      .replace(/\[version\]/g, version)
-      .replace(/\&lt;script /g, '<span class="nt">&lt;script </span>')
-      .replace(/("https.+")/g, '<span class="s">$1</span>')
-      .replace(/>\&lt;\/script>/g, '<span class="nt">>&lt;/script></span>');
+    const code = document.getElementById('script-code-sample');
+    return array.map(x => code.querySelector('code').innerHTML.replace(/__URL__/, x))
+        .join("\n")
+        .replace(/__VERSION__/g, version);
   }
 
   public npm() {
@@ -102,7 +82,7 @@ const picker = new easepick.create([config])
   }
 
   public quickExample(version, config) {
-    let html = this.quickExampleHTML;
+    let html = document.querySelector('#quick-example-sample code').innerHTML;
 
     if (typeof config.element !== 'string') {
       config.element = '#datepicker';
@@ -119,7 +99,7 @@ const picker = new easepick.create([config])
       config['element'] = '#checkin';
       config['RangePlugin']['elementEnd'] = '#checkout';
 
-      html = html.replace(/"datepicker"/, '"checkin"').replace(/\[elementEnd\]/, '<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"checkout"</span><span class="nt">/&gt;</span>');
+      html = html.replace(/datepicker/, '"checkin"').replace(/__ELEMENT_END__/, '<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>checkout<span class="token punctuation">"</span></span><span class="token punctuation">/&gt;</span></span>');
     }
 
     const config_json = JSON.stringify(config, null, 4)
@@ -130,9 +110,10 @@ const picker = new easepick.create([config])
       //.replace(/</g, '&lt;')
       .replace(/^\s+/, '')
       .replace(/\s+$/, '')
-      .replace(/\[version\]/g, version)
-      .replace(/\[elementEnd\]/, '')
-      .replace(/\[config\]/, config_json);
+      .replace(/__VERSION__/g, version)
+      .replace(/__SELFVERSION__/g, __VERSION__)
+      .replace(/__ELEMENT_END__/, '')
+      .replace(/__CONFIG__/, config_json);
   }
 
   public setupInfo(version: string, config) {

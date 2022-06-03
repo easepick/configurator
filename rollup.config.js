@@ -1,11 +1,11 @@
 import typescript from '@rollup/plugin-typescript';
+import define from 'rollup-plugin-define';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
-import copy from 'rollup-plugin-copy';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-import { obfuscator } from 'rollup-obfuscator';
 
+const pkg = require('./package.json');
 const ENV_PROD = process.env.BUILD === 'production';
 
 export default {
@@ -13,6 +13,15 @@ export default {
   output: {
     file: `dist/index.js`,
     format: 'umd',
+    banner: `/**
+* @license
+* Package: ${pkg.name}
+* Version: ${pkg.version}
+* https://easepick.com/
+* Copyright ${(new Date()).getFullYear()} Rinat G.
+* 
+* Licensed under the terms of GNU General Public License Version 2 or later. (http://www.gnu.org/licenses/gpl.html)
+*/`,
     globals(id) {
       if (/^@easepick\//.test(id)) {
         return 'easepick';
@@ -22,6 +31,11 @@ export default {
     }
   },
   plugins: [
+    define({
+      replacements: {
+        __VERSION__: JSON.stringify(pkg.version),
+      }
+    }),
     nodeResolve(),
     typescript({
       tsconfig: 'tsconfig.json',
@@ -33,17 +47,6 @@ export default {
       minimize: true,
     }),
     ENV_PROD && terser(),
-    // ENV_PROD && obfuscator({
-    //   domainLock: ['127.0.0.1', 'localhost', 'easepick.com'],
-    //   domainLockRedirectUrl: 'https://easepick.com',
-    //   deadCodeInjection: true,
-    // }),
-    // copy({
-    //   targets: [
-    //     { src: 'dist/**/*', dest: '../easepick-docs/assets/configurator' },
-    //   ],
-    //   hook: 'writeBundle',
-    // }),
   ],
   external(id) {
     return /^@easepick\//.test(id);
