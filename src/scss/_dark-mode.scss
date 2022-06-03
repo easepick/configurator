@@ -31,7 +31,7 @@
         box-shadow: none;
 
         .pkg-tab-name {
-          color: #539bf5;
+          color: var(--default-theme-color);
         }
       }
     }
@@ -99,13 +99,6 @@
             }
           }
 
-          .pkg-option-range {
-            span {
-              background-color: #0175ff;
-              color: #fff;
-            }
-          }
-
           .pkg-option-number {
             background-color: #22272c;
 
@@ -140,7 +133,7 @@
             border-top-color: #373e47;
             border-bottom-color: #373e47;
             box-shadow: none;
-            color: #539bf5;
+            color: var(--default-theme-color);
           }
         }
       }
